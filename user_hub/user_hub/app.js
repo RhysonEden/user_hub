@@ -1,17 +1,17 @@
 const BASE_URL = "https://jsonplace-univclone.herokuapp.com";
 
-function fetchUsers() {
-  return fetch(`${BASE_URL}/users`)
-    .then(function(response) {
-      return response.json();
-    })
-    .catch(function(error) {
-      console.error(error);
-    });
-}
+// function fetchUsers() {
+//   return fetch(`${BASE_URL}/users`)
+//     .then(function(response) {
+//       return response.json();
+//     })
+//     .catch(function(error) {
+//       console.error(error);
+//     });
+// }
 
 function renderUser(user) {
-  $("#user-list").append(
+  return $("#user-list").append(
     $(`<div class="user-card">
     <header>
       <h2>${user.name}</h2>
@@ -41,6 +41,7 @@ function renderUserList(userList) {
     $("#user-list").append(renderUser(user));
   });
 }
+
 function bootstrap() {
   fetchUsers().then(renderUserList);
 }
@@ -80,16 +81,19 @@ function renderAlbum(album) {
 
   album.photos.forEach(function(photo) {
     photoFrame.append(renderPhoto(photo));
+    console.log(photo);
   });
+  return albumFrame; //oops forgot to return the albumFrame
 }
 /* render a single photo */
+
 function renderPhoto(photo) {
-  return $(`<div class='photo-card'>
-  <a href="${photo.url}" target='_blank'
-<img src="${photo.thumbnailUrl}">
-<figure>${photo.title}</fiugre>
-</a>
-</div>`);
+  return $(`<div class="photo-card">
+    <a href="${photo.url}" target="_blank">
+      <img src="${photo.thumbnailUrl}" />
+      <figure>${photo.title}</figure>
+    </a>
+  </div>`);
 }
 
 /* render an array of albums */
@@ -98,7 +102,7 @@ function renderAlbumList(albumList) {
   $("#album-list")
     .empty()
     .addClass("active");
-
+  // console.log(albumList);
   albumList.forEach(function(album) {
     $("#album-list").append(renderAlbum(album));
   });
@@ -198,8 +202,8 @@ $("#post-list").on("click", ".post-card .toggle-comments", function() {
       });
       toggleComments(postCardElement);
     })
-    .catch(function() {
-      console.error("error");
+    .catch(function(error) {
+      console.error(error);
 
       toggleComments(postCardElement);
     });
